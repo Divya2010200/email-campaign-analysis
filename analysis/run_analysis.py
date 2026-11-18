@@ -224,15 +224,23 @@ def write_report(frame, results, segments, sample, balance, output: Path) -> Non
             f"| {row['treatment']} | {row['metric']} | {values[0]} | {values[1]} | {values[2]} | "
             f"{values[3]} to {values[4]} | {row['adjusted_p_value']:.4f} |"
         )
+    clear_segments = segments[segments["adjusted_p_value"] < 0.05].sort_values("adjusted_p_value")
     lines += ["", "## Exploratory customer segments", "",
-              "These comparisons were not pre-specified, so treat them as ideas for a follow-up test.", "",
-              "| Dimension | Segment | Campaign | Revenue lift | 95% interval | Adjusted p |",
-              "|---|---|---|---:|---:|---:|"]
-    for _, row in segments.sort_values("difference", ascending=False).head(8).iterrows():
-        lines.append(
-            f"| {row['dimension']} | {row['segment_value']} | {row['campaign']} | {money(row['difference'])} | "
-            f"{money(row['ci_low'])} to {money(row['ci_high'])} | {row['adjusted_p_value']:.4f} |"
-        )
+              f"{len(clear_segments)} of {len(segments)} segment comparisons show a clear revenue lift against "
+              "no e-mail after multiple-test adjustment.",
+              "These comparisons were not pre-specified. They do not prove that the lift is larger in one "
+              "segment than another, so targeting needs a separate test.", ""]
+    if clear_segments.empty:
+        lines.append("No segment comparison remained clear after adjustment.")
+    else:
+        lines += ["| Dimension | Segment | Campaign | Revenue lift | 95% interval | Adjusted p |",
+                  "|---|---|---|---:|---:|---:|"]
+        for _, row in clear_segments.iterrows():
+            lines.append(
+                f"| {row['dimension']} | {row['segment_value']} | {row['campaign']} | {money(row['difference'])} | "
+                f"{money(row['ci_low'])} to {money(row['ci_high'])} | {row['adjusted_p_value']:.4f} |"
+            )
+    lines += ["", "All segment results are in `output/powerbi/segment_results.csv`."]
     lines += ["", "## Data source", "",
               "Kevin Hillstrom, MineThatData E-Mail Analytics and Data Mining Challenge, 2008."]
     (output / "REPORT.md").write_text("\n".join(lines) + "\n", encoding="utf-8")

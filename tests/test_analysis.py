@@ -89,7 +89,10 @@ def test_pipeline_outputs_connect(tmp_path):
     for table, key in [("dim_campaign", "campaign_key"), ("dim_area", "area_key"), ("dim_channel", "channel_key")]:
         dim = pd.read_csv(folder / f"{table}.csv")
         assert dim[key].is_unique and set(fact[key]) <= set(dim[key])
-    assert "Revenue is not profit" in (tmp_path / "REPORT.md").read_text(encoding="utf-8")
+    report = (tmp_path / "REPORT.md").read_text(encoding="utf-8")
+    assert "Revenue is not profit" in report
+    assert f"of {len(segments)} segment comparisons" in report
+    assert "do not prove" in report
 
 
 @pytest.mark.parametrize("change", [{"visit": 2}, {"spend": -1}, {"segment": "Other"}])

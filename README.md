@@ -15,6 +15,20 @@ Should the retailer send the Mens e-mail, the Womens e-mail, or no e-mail, and w
 - Explores customer segments without treating them as proof
 - Exports a star schema for Power BI
 
+## Results
+
+The 64,000 customers were randomly assigned in nearly equal groups, and balance checks passed.
+
+| Compared with no e-mail | Mens e-mail | Womens e-mail |
+|---|---:|---:|
+| Visit rate | +7.66 points | +4.52 points |
+| Conversion rate | +0.68 points | +0.31 points |
+| Revenue per customer | +$0.77 | +$0.42 |
+
+The Mens e-mail produced the highest revenue and also beat the Womens e-mail after multiple-test adjustment. For short-term revenue, it is the recommended option, subject to margin and send-cost data. Segment results are exploratory.
+
+The dashboard is available in [`docs/email_campaign_dashboard.pdf`](docs/email_campaign_dashboard.pdf).
+
 ## Run it
 
 ```powershell

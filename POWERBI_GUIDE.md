@@ -89,8 +89,8 @@ Format the rates as percentages and money measures as US dollars.
 - Slicers: area type, channel, customer type, purchase history, history band
 - Matrix: campaign by history band, showing Revenue Lift per Customer
 - Table from `segment_results`
-- Label this page **Exploratory**
+- Label this page **Exploratory**, and note that a clear lift within a segment does not prove the lift is larger there
 
 ## 5. Save your work
 
-Save as `email_campaign_dashboard.pbix`, and export a screenshot of each page to `images/`.
+Save as `email_campaign_dashboard.pbix`. It contains customer-level source data, so keep it out of Git and share the PDF export in `docs/` instead.
